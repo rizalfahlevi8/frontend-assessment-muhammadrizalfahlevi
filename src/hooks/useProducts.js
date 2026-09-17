@@ -4,6 +4,7 @@ import {
   fetchProducts as fetchProductsAction,
   addProduct as addProductAction,
   editProduct as editProductAction,
+  deleteProduct as deleteProductAction,
 } from '../store/productsSlice';
 
 export function useProducts() {
@@ -34,6 +35,13 @@ export function useProducts() {
     [dispatch]
   );
 
+  const deleteProduct = useCallback(
+    (id) => {
+      return dispatch(deleteProductAction(id));
+    },
+    [dispatch]
+  );
+
   return {
     products,
     isLoading,
@@ -41,5 +49,6 @@ export function useProducts() {
     fetchProducts,
     addProduct,
     editProduct,
+    deleteProduct,
   };
 }
