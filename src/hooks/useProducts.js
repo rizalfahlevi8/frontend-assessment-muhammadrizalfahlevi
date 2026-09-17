@@ -1,6 +1,10 @@
 import { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts as fetchProductsAction } from '../store/productsSlice';
+import {
+  fetchProducts as fetchProductsAction,
+  addProduct as addProductAction,
+  editProduct as editProductAction,
+} from '../store/productsSlice';
 
 export function useProducts() {
   const dispatch = useDispatch();
@@ -16,10 +20,26 @@ export function useProducts() {
     return dispatch(fetchProductsAction());
   }, [dispatch]);
 
+  const addProduct = useCallback(
+    (productData) => {
+      return dispatch(addProductAction(productData));
+    },
+    [dispatch]
+  );
+
+  const editProduct = useCallback(
+    (id, updatedData) => {
+      return dispatch(editProductAction(id, updatedData));
+    },
+    [dispatch]
+  );
+
   return {
     products,
     isLoading,
     error,
     fetchProducts,
+    addProduct,
+    editProduct,
   };
 }

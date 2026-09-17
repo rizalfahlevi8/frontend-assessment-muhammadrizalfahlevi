@@ -8,6 +8,7 @@ import { ITEMS_PER_PAGE } from '../constants';
 import { ProductFilters } from '../components/product/ProductFilters';
 import { ProductTable } from '../components/product/ProductTable';
 import { ProductCard } from '../components/product/ProductCard';
+import { ProductFormModal } from '../components/product/ProductFormModal';
 import { ProductDetailModal } from '../components/product/ProductDetailModal';
 import { TableSkeleton } from '../components/common/Skeleton';
 import { Pagination } from '../components/common/Pagination';
@@ -27,6 +28,8 @@ export function ProductsPage() {
     isLoading,
     error,
     fetchProducts,
+    addProduct,
+    editProduct,
   } = useProducts();
 
   const stats = useProductStats(products);
@@ -52,10 +55,17 @@ export function ProductsPage() {
   } = usePagination(filteredProducts, ITEMS_PER_PAGE);
 
   const {
+    isFormModalOpen,
+    productToEdit,
     productToView,
+    isSubmitting,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleCloseFormModal,
     handleOpenView,
     handleCloseViewModal,
-  } = useProductModals();
+    handleFormSubmit,
+  } = useProductModals({ addProduct, editProduct });
 
   return (
     <div className="min-h-screen bg-slate-50/60 pb-16">
@@ -143,6 +153,7 @@ export function ProductsPage() {
           statusFilter={statusFilter}
           onStatusChange={handleStatusChange}
           onResetFilters={handleResetFilters}
+          onAddClick={handleOpenCreate}
         />
 
         {isLoading && products.length === 0 ? (
@@ -162,6 +173,7 @@ export function ProductsPage() {
               <ProductTable
                 products={paginatedItems}
                 onView={handleOpenView}
+                onEdit={handleOpenEdit}
               />
             </div>
 
@@ -171,6 +183,7 @@ export function ProductsPage() {
                   key={prod.id}
                   product={prod}
                   onView={handleOpenView}
+                  onEdit={handleOpenEdit}
                 />
               ))}
               {paginatedItems.length === 0 && (
@@ -192,10 +205,19 @@ export function ProductsPage() {
         )}
       </main>
 
+      <ProductFormModal
+        isOpen={isFormModalOpen}
+        onClose={handleCloseFormModal}
+        onSubmit={handleFormSubmit}
+        initialData={productToEdit}
+        isSubmitting={isSubmitting}
+      />
+
       <ProductDetailModal
         isOpen={Boolean(productToView)}
         onClose={handleCloseViewModal}
         product={productToView}
+        onEdit={handleOpenEdit}
       />
     </div>
   );
