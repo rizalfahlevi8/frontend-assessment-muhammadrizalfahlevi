@@ -1,9 +1,9 @@
 import { Badge } from '../common/Badge';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
-import { Eye, Calendar } from 'lucide-react';
+import { Eye, Edit3, Calendar } from 'lucide-react';
 
-export function ProductCard({ product, onView }) {
+export function ProductCard({ product, onView, onEdit }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 p-4.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-3.5">
       <div>
@@ -41,6 +41,13 @@ export function ProductCard({ product, onView }) {
             title="View Details"
           >
             <Eye className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => onEdit(product)}
+            className="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+            title="Edit Product"
+          >
+            <Edit3 className="w-4 h-4" />
           </button>
         </div>
       </div>

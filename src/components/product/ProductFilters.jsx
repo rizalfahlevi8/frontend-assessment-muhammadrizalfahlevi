@@ -1,4 +1,5 @@
-import { Search, X } from 'lucide-react';
+import { Search, Plus, X } from 'lucide-react';
+import { Button } from '../common/Button';
 import { Select } from '../common/Select';
 import { SEEDED_CATEGORIES, PRODUCT_STATUSES } from '../../constants';
 
@@ -10,6 +11,7 @@ export function ProductFilters({
   statusFilter,
   onStatusChange,
   onResetFilters,
+  onAddClick,
 }) {
   const hasActiveFilters = Boolean(searchTerm || categoryFilter || statusFilter);
 
@@ -76,6 +78,16 @@ export function ProductFilters({
               Reset
             </button>
           )}
+
+          <Button
+            variant="primary"
+            size="md"
+            icon={Plus}
+            onClick={onAddClick}
+            className="ml-auto sm:ml-0"
+          >
+            Add Product
+          </Button>
         </div>
       </div>
     </div>

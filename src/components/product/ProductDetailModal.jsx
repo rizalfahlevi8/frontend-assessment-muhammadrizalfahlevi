@@ -5,7 +5,7 @@ import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
 import { Package, Tag, DollarSign, Calendar, CheckCircle } from 'lucide-react';
 
-export function ProductDetailModal({ isOpen, onClose, product }) {
+export function ProductDetailModal({ isOpen, onClose, product, onEdit }) {
   if (!product) return null;
 
   return (
@@ -73,6 +73,17 @@ export function ProductDetailModal({ isOpen, onClose, product }) {
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
+          {onEdit && (
+            <Button
+              variant="primary"
+              onClick={() => {
+                onClose();
+                onEdit(product);
+              }}
+            >
+              Edit Product
+            </Button>
+          )}
         </div>
       </div>
     </Modal>

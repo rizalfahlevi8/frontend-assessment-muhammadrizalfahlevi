@@ -1,9 +1,9 @@
 import { Badge } from '../common/Badge';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
-import { Eye, PackageSearch } from 'lucide-react';
+import { Eye, Edit3, PackageSearch } from 'lucide-react';
 
-export function ProductTable({ products, onView }) {
+export function ProductTable({ products, onView, onEdit }) {
   if (products.length === 0) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200/80 p-12 text-center shadow-xs">
@@ -70,7 +70,7 @@ export function ProductTable({ products, onView }) {
                   className="py-3.5 px-5 whitespace-nowrap text-right text-xs"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-end gap-1">
                     <button
                       type="button"
                       onClick={() => onView(product)}
@@ -78,6 +78,14 @@ export function ProductTable({ products, onView }) {
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onEdit(product)}
+                      className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+                      title="Edit Product"
+                    >
+                      <Edit3 className="w-4 h-4" />
                     </button>
                   </div>
                 </td>
