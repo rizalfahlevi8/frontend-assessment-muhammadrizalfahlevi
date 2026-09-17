@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 
-export function useProductModals({ addProduct, editProduct } = {}) {
+export function useProductModals({ addProduct, editProduct, deleteProduct }) {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
   const [productToView, setProductToView] = useState(null);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleOpenCreate = useCallback(() => {
@@ -29,8 +30,15 @@ export function useProductModals({ addProduct, editProduct } = {}) {
     setProductToView(null);
   }, []);
 
+  const handleOpenDelete = useCallback((product) => {
+    setProductToDelete(product);
+  }, []);
+
+  const handleCloseDeleteModal = useCallback(() => {
+    setProductToDelete(null);
+  }, []);
+
   const handleFormSubmit = useCallback(async (formData) => {
-    if (!addProduct && !editProduct) return;
     setIsSubmitting(true);
     try {
       if (productToEdit) {
@@ -45,10 +53,22 @@ export function useProductModals({ addProduct, editProduct } = {}) {
     }
   }, [productToEdit, editProduct, addProduct]);
 
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!productToDelete) return;
+    setIsSubmitting(true);
+    try {
+      await deleteProduct(productToDelete.id);
+      setProductToDelete(null);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [productToDelete, deleteProduct]);
+
   return {
     isFormModalOpen,
     productToEdit,
     productToView,
+    productToDelete,
     isSubmitting,
 
     handleOpenCreate,
@@ -56,6 +76,9 @@ export function useProductModals({ addProduct, editProduct } = {}) {
     handleCloseFormModal,
     handleOpenView,
     handleCloseViewModal,
+    handleOpenDelete,
+    handleCloseDeleteModal,
     handleFormSubmit,
+    handleDeleteConfirm,
   };
 }

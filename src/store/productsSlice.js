@@ -65,6 +65,20 @@ const productsSlice = createSlice({
         state.items[index] = originalProduct;
       }
     },
+    optimisticDelete: (state, action) => {
+      const id = action.payload;
+      state.items = state.items.filter((item) => item.id !== id);
+    },
+    rollbackDelete: (state, action) => {
+      const { originalProduct, originalIndex } = action.payload;
+      if (originalProduct) {
+        if (originalIndex >= 0 && originalIndex <= state.items.length) {
+          state.items.splice(originalIndex, 0, originalProduct);
+        } else {
+          state.items.push(originalProduct);
+        }
+      }
+    },
   },
 });
 
@@ -78,6 +92,8 @@ export const {
   optimisticUpdate,
   reconcileUpdate,
   rollbackUpdate,
+  optimisticDelete,
+  rollbackDelete,
 } = productsSlice.actions;
 
 export const fetchProducts = () => async (dispatch) => {
@@ -133,6 +149,25 @@ export const editProduct = (id, updatedData) => async (dispatch, getState) => {
       dispatch(rollbackUpdate({ id, originalProduct }));
     }
     dispatch(showError(`Failed to update product #${id}. Changes rolled back.`));
+    return false;
+  }
+};
+
+export const deleteProduct = (id) => async (dispatch, getState) => {
+  const originalIndex = getState().products.items.findIndex((item) => item.id === id);
+  const originalProduct = getState().products.items[originalIndex];
+
+  dispatch(optimisticDelete(id));
+  dispatch(showSuccess(`Product "${originalProduct?.name || id}" deleted`));
+
+  try {
+    await productService.deleteProduct(id);
+    return true;
+  } catch {
+    if (originalProduct && originalIndex >= 0) {
+      dispatch(rollbackDelete({ originalProduct, originalIndex }));
+    }
+    dispatch(showError(`Failed to delete product #${id}. Changes rolled back.`));
     return false;
   }
 };

@@ -1,9 +1,9 @@
 import { Badge } from '../common/Badge';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
-import { Eye, Edit3, Calendar } from 'lucide-react';
+import { Eye, Edit3, Trash2, Calendar } from 'lucide-react';
 
-export function ProductCard({ product, onView, onEdit }) {
+export function ProductCard({ product, onView, onEdit, onDelete }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 p-4.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-3.5">
       <div>
@@ -37,17 +37,24 @@ export function ProductCard({ product, onView, onEdit }) {
         <div className="flex items-center gap-1">
           <button
             onClick={() => onView(product)}
-            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             title="View Details"
           >
             <Eye className="w-4 h-4" />
           </button>
           <button
             onClick={() => onEdit(product)}
-            className="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+            className="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
             title="Edit Product"
           >
             <Edit3 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => onDelete(product)}
+            className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+            title="Delete Product"
+          >
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>

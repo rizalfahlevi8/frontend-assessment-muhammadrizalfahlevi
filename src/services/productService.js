@@ -24,4 +24,9 @@ export const productService = {
     const response = await apiClient.patch(`/products/${id}`, productData);
     return response.data;
   },
+
+  async deleteProduct(id) {
+    const response = await apiClient.delete(`/products/${id}`);
+    return response.data;
+  },
 };

@@ -1,9 +1,9 @@
 import { Badge } from '../common/Badge';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
-import { Eye, Edit3, PackageSearch } from 'lucide-react';
+import { Eye, Edit3, Trash2, PackageSearch } from 'lucide-react';
 
-export function ProductTable({ products, onView, onEdit }) {
+export function ProductTable({ products, onView, onEdit, onDelete }) {
   if (products.length === 0) {
     return (
       <div className="bg-white rounded-2xl border border-slate-200/80 p-12 text-center shadow-xs">
@@ -74,7 +74,7 @@ export function ProductTable({ products, onView, onEdit }) {
                     <button
                       type="button"
                       onClick={() => onView(product)}
-                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
@@ -82,10 +82,18 @@ export function ProductTable({ products, onView, onEdit }) {
                     <button
                       type="button"
                       onClick={() => onEdit(product)}
-                      className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+                      className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                       title="Edit Product"
                     >
                       <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(product)}
+                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                      title="Delete Product"
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </td>

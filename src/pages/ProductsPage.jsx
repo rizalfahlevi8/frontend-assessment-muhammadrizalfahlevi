@@ -10,6 +10,7 @@ import { ProductTable } from '../components/product/ProductTable';
 import { ProductCard } from '../components/product/ProductCard';
 import { ProductFormModal } from '../components/product/ProductFormModal';
 import { ProductDetailModal } from '../components/product/ProductDetailModal';
+import { ConfirmModal } from '../components/common/ConfirmModal';
 import { TableSkeleton } from '../components/common/Skeleton';
 import { Pagination } from '../components/common/Pagination';
 import { Button } from '../components/common/Button';
@@ -30,6 +31,7 @@ export function ProductsPage() {
     fetchProducts,
     addProduct,
     editProduct,
+    deleteProduct,
   } = useProducts();
 
   const stats = useProductStats(products);
@@ -58,14 +60,18 @@ export function ProductsPage() {
     isFormModalOpen,
     productToEdit,
     productToView,
+    productToDelete,
     isSubmitting,
     handleOpenCreate,
     handleOpenEdit,
     handleCloseFormModal,
     handleOpenView,
     handleCloseViewModal,
+    handleOpenDelete,
+    handleCloseDeleteModal,
     handleFormSubmit,
-  } = useProductModals({ addProduct, editProduct });
+    handleDeleteConfirm,
+  } = useProductModals({ addProduct, editProduct, deleteProduct });
 
   return (
     <div className="min-h-screen bg-slate-50/60 pb-16">
@@ -174,6 +180,7 @@ export function ProductsPage() {
                 products={paginatedItems}
                 onView={handleOpenView}
                 onEdit={handleOpenEdit}
+                onDelete={handleOpenDelete}
               />
             </div>
 
@@ -184,6 +191,7 @@ export function ProductsPage() {
                   product={prod}
                   onView={handleOpenView}
                   onEdit={handleOpenEdit}
+                  onDelete={handleOpenDelete}
                 />
               ))}
               {paginatedItems.length === 0 && (
@@ -218,6 +226,14 @@ export function ProductsPage() {
         onClose={handleCloseViewModal}
         product={productToView}
         onEdit={handleOpenEdit}
+      />
+
+      <ConfirmModal
+        isOpen={Boolean(productToDelete)}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteConfirm}
+        productName={productToDelete?.name}
+        isLoading={isSubmitting}
       />
     </div>
   );
